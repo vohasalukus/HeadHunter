@@ -10,7 +10,7 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from app.database import  DATABASE_URL, Base
-
+from app.models import *
 
 
 # this is the Alembic Config object, which provides
