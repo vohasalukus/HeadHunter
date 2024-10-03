@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
+from app.relations.relations_application import Application
 from app.relations.relations_skill import Skill
 
 
@@ -16,6 +17,10 @@ class Company(Base):
 
     # One to many
     vacancies: Mapped[List["Company"]] = relationship("Vacancy", back_populates="company")
+
+    #One to many
+    applications: Mapped[List["Application"]] = relationship("Application", back_populates="company")
+
 
 class Vacancy(Base):
 

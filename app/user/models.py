@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
+from app.relations.relations_application import Application
 from app.relations.relations_skill import Skill
 
 
@@ -21,7 +22,12 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(256))
     role: Mapped[UserRole] = mapped_column(Enum(UserRole))
 
+    # One to many
     resumes: Mapped[List["Resume"]] = relationship("Resume", back_populates="user")
+
+    # One to many
+    applications: Mapped[List["Application"]] = relationship("Application", back_populates="user")
+
 
 class Resume(Base):
 
