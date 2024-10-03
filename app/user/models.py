@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
+from app.relations.relations_skill import Skill
 
 
 class UserRole(PyEnum):
@@ -31,4 +32,10 @@ class Resume(Base):
     # One to many - у одно юзера может быть много резюме
     user: Mapped[User] = relationship("User", back_populates="resumes")
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+
+    # Many to many - связь со скиллами
+
+    skills: Mapped[List["Skill"]] = relationship(
+        secondary="resume_skill", back_populates="resumes"
+    )
 
