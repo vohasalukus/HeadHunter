@@ -10,10 +10,7 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from app.database import  DATABASE_URL, Base
-from app.user.models import *
-from app.relations.relations_skill import *
-from app.relations.relations_application import *
-from app.company.models import *
+
 
 
 # this is the Alembic Config object, which provides
