@@ -25,3 +25,4 @@ class SResume(BaseModel):
     user_id: int
 
     skills: List["SSkill"]
+

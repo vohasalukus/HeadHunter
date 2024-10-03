@@ -25,3 +25,4 @@ class SVacancy(BaseModel):
     company_id: int
 
     skills: List["SSkill"]
+

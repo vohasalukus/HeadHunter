@@ -21,3 +21,4 @@ class SApplication(BaseModel):
 
     user_id: int
     company_id: int
+
