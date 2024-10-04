@@ -1,4 +1,4 @@
-import enum as PyEnum
+from enum import Enum as PyEnum
 from typing import List
 
 from sqlalchemy import String, Enum, Integer, ForeignKey
@@ -6,14 +6,14 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
-from app.relations.relations_application import Application
-from app.relations.relations_skill import Skill
+# from app.relations.relations_application import Application
+# from app.relations.relations_skill import Skill
 
 
 class UserRole(PyEnum):
     ADMIN = 'admin'
-    jobseeker = 'jobseeker'
-    recruiter = 'recruiter'
+    JOBSEEKER = 'jobseeker'
+    RECRUITER = 'recruiter'
 
 class User(Base):
 

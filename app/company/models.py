@@ -6,8 +6,8 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
-from app.relations.relations_application import Application
-from app.relations.relations_skill import Skill
+# from app.relations.relations_application import Application
+# from app.relations.relations_skill import Skill
 
 
 class Company(Base):

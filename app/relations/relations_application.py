@@ -1,4 +1,4 @@
-import enum as PyEnum
+from enum import Enum as PyEnum
 
 from sqlalchemy import Enum, Text, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
@@ -6,7 +6,7 @@ from sqlalchemy.testing.schema import mapped_column
 
 from app.company.models import Company
 from app.database import Base
-from app.user.models import User
+# from app.user.models import User
 
 
 class StatusApplication(PyEnum):
