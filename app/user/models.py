@@ -37,7 +37,7 @@ class Resume(Base):
 
     # One to many - у одно юзера может быть много резюме
     user: Mapped[User] = relationship("User", back_populates="resumes")
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     # Many to many - связь со скиллами
 

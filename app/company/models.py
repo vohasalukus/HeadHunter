@@ -33,7 +33,7 @@ class Vacancy(Base):
 
     # One to many - у одной компании много вакансии
     company: Mapped[Company] = relationship("Company", back_populates="vacancies")
-    company_id: Mapped[int] = mapped_column(Integer, ForeignKey("company.id"))
+    company_id: Mapped[int] = mapped_column(Integer, ForeignKey("companies.id"))
 
     # Many to many - со скиллами
 

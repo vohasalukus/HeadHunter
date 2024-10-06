@@ -23,9 +23,9 @@ class Application(Base):
     # One to many - с юзерами, много откликов, но может все одни принадлежат одному юзеру
 
     user: Mapped["User"] = relationship("User", back_populates="applications")
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     # One to many - с компаниями, много откликов, но все принадлежат одной компании
 
     company: Mapped["Company"] = relationship("Company", back_populates="applications")
-    company_id: Mapped[int] = mapped_column(Integer, ForeignKey("company.id"))
+    company_id: Mapped[int] = mapped_column(Integer, ForeignKey("companies.id"))
