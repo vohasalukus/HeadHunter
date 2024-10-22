@@ -19,6 +19,11 @@ class SUUser(BaseModel):
     role: UserRole | None = None
 
 
+class SAuth(BaseModel):
+    email: EmailStr
+    password: str
+
+
 class SRUser(BaseModel):
     name: str
     email: EmailStr
