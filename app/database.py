@@ -20,6 +20,7 @@ async_session = sessionmaker(
 
 p = inflect.engine()
 
+
 class Base(DeclarativeBase):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
 

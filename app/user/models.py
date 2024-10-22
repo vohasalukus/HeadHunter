@@ -6,14 +6,13 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
-# from app.relations.relations_application import Application
-# from app.relations.relations_skill import Skill
 
 
 class UserRole(PyEnum):
     ADMIN = 'admin'
     JOBSEEKER = 'jobseeker'
     RECRUITER = 'recruiter'
+
 
 class User(Base):
 
@@ -35,7 +34,7 @@ class Resume(Base):
     desired_salary: Mapped[int] = mapped_column(Integer)
     profession: Mapped[str] = mapped_column(String(256), index=True)
 
-    # One to many - у одно юзера может быть много резюме
+    # Many to one - у одно юзера может быть много резюме
     user: Mapped[User] = relationship("User", back_populates="resumes")
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
