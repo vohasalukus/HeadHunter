@@ -4,9 +4,7 @@ from sqlalchemy import String, Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
-# from app.company.models import Vacancy
 from app.database import Base
-# from app.user.models import Resume
 
 
 class Skill(Base):
@@ -21,6 +19,7 @@ class Skill(Base):
     vacancies: Mapped[List["Vacancy"]] = relationship(
         secondary="vacancy_skill", back_populates="skills"
     )
+
 
 resume_skill = Table(
     "resume_skill",

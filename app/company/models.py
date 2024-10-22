@@ -6,8 +6,6 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from app.database import Base
-# from app.relations.relations_application import Application
-# from app.relations.relations_skill import Skill
 
 
 class Company(Base):
@@ -16,9 +14,9 @@ class Company(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # One to many
-    vacancies: Mapped[List["Company"]] = relationship("Vacancy", back_populates="company")
+    vacancies: Mapped[List["Vacancy"]] = relationship("Vacancy", back_populates="company")
 
-    #One to many
+    # One to many
     applications: Mapped[List["Application"]] = relationship("Application", back_populates="company")
 
 
@@ -31,7 +29,7 @@ class Vacancy(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime)
 
-    # One to many - у одной компании много вакансии
+    # Many to one - у одной компании много вакансии
     company: Mapped[Company] = relationship("Company", back_populates="vacancies")
     company_id: Mapped[int] = mapped_column(Integer, ForeignKey("companies.id"))
 
