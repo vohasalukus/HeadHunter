@@ -16,7 +16,7 @@ class StatusApplication(PyEnum):
 
 
 class Application(Base):
-    status: Mapped[StatusApplication] = mapped_column(Enum(StatusApplication), native_enum=False)
+    status: Mapped[StatusApplication] = mapped_column(Enum(StatusApplication))
     letter: Mapped[str] = mapped_column(Text)
 
     # Many to one - с юзерами, много откликов, но может все одни принадлежат одному юзеру

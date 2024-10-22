@@ -19,7 +19,7 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(256), index=True)
     email: Mapped[str] = mapped_column(String(256), index=True, unique=True)
     hashed_password: Mapped[str] = mapped_column(String(256))
-    role: Mapped[UserRole] = mapped_column(Enum(UserRole), native_enum=False)
+    role: Mapped[UserRole] = mapped_column(Enum(UserRole))
 
     # One to many
     resumes: Mapped[List["Resume"]] = relationship("Resume", back_populates="user")
