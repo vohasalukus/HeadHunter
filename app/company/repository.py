@@ -5,5 +5,6 @@ from app.repository.base import BaseRepository
 class CompanyRepository(BaseRepository):
     model = Company
 
-class ResumeRepository(BaseRepository):
+
+class VacancyRepository(BaseRepository):
     model = Vacancy

@@ -2,6 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, EmailStr
 
+from app.relations.schemas import SGSkill
 from app.user.models import UserRole
 
 
@@ -48,6 +49,9 @@ class SGResume(BaseModel):
     profession: str
     user_id: int
     skills: List['SGSkill'] = []
+
+    class Config:
+        from_attributes = True
 
 
 class SUResume(BaseModel):

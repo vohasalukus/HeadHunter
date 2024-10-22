@@ -3,6 +3,8 @@ from typing import List
 
 from pydantic import BaseModel
 
+from app.relations.schemas import SGSkill
+
 
 # Company Schemas
 class SGCompany(BaseModel):

@@ -35,6 +35,9 @@ class SGSkill(BaseModel):
     name: str
     experience: str
 
+    class Config:
+        from_attributes = True
+
 
 class SUSkill(BaseModel):
     name: str | None = None

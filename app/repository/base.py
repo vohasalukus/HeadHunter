@@ -44,7 +44,6 @@ class BaseRepository:
                 await session.commit()
                 return instance, True
 
-
     @classmethod
     async def update_by_filter(cls, filter, **data):
         async with async_session() as session:
@@ -67,6 +66,7 @@ class BaseRepository:
         if not instance:
             raise ModelNotFoundException(f"{cls.model.__name__} with id {id} not found")
 
+        # Обновляем поля объекта
         for key, value in data.items():
             setattr(instance, key, value)
 
@@ -89,11 +89,15 @@ class BaseRepository:
         await session.commit()
 
     @classmethod
-    async def get_all(cls):
-        async with async_session() as session:
-            query = select(cls.model)
-            result = await session.execute(query)
-            return result.scalars().all()
+    async def get_all(cls, session: AsyncSession, includes: List[str] = None):
+        query = select(cls.model)
+
+        if includes:
+            for include in includes:
+                query = query.options(joinedload(getattr(cls.model, include)))
+
+        result = await session.execute(query)
+        return result.unique().scalars().all()
 
     @classmethod
     async def get_by_id(cls, id, raise_exception: bool = False, includes: List[str] = None):
@@ -119,11 +123,15 @@ class BaseRepository:
             return instance
 
     @classmethod
-    async def filter(cls, **filters):
-        async with async_session() as session:
-            query = select(cls.model).filter_by(**filters)
-            result = await session.execute(query)
-            return result.scalars().all()
+    async def filter(cls, session: AsyncSession, includes: List[str] = None, **filters):
+        query = select(cls.model).filter_by(**filters)
+
+        if includes:
+            for include in includes:
+                query = query.options(joinedload(getattr(cls.model, include)))
+
+        result = await session.execute(query)
+        return result.unique().scalars().all()
 
     @classmethod
     async def paginate(cls, page: int, limit: int, filter=None, includes: List[str] = None, order_by=None, **filters):
