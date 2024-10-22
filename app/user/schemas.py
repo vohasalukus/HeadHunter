@@ -29,6 +29,9 @@ class SRUser(BaseModel):
     email: EmailStr
     role: UserRole
 
+    class Config:
+        from_attributes = True
+
 
 class SCUser(BaseModel):
     name: str

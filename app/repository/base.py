@@ -1,6 +1,7 @@
 from typing import List
 
 from sqlalchemy import select, func
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from app.database import async_session
@@ -21,12 +22,11 @@ class BaseRepository:
         return option
 
     @classmethod
-    async def create(cls, **data):
-        async with async_session() as session:
-            instance = cls.model(**data)
-            session.add(instance)
-            await session.commit()
-            return instance
+    async def create(cls, session: AsyncSession, **data):
+        instance = cls.model(**data)
+        session.add(instance)
+        await session.commit()
+        return instance
 
     @classmethod
     async def get_or_create(cls, includes: List[str] = None, defaults: dict = None, **filters):
@@ -44,24 +44,6 @@ class BaseRepository:
                 await session.commit()
                 return instance, True
 
-    @classmethod
-    async def update_or_create(cls, defaults: dict = None, **filters):
-        async with async_session() as session:
-            query = select(cls.model).filter_by(**filters)
-            result = await session.execute(query)
-            instance = result.scalar_one_or_none()
-            if instance:
-                for key, value in defaults.items():
-                    setattr(instance, key, value)
-                session.add(instance)
-                await session.commit()
-                await session.refresh(instance)
-                return instance, False
-            else:
-                instance = cls.model(**filters, **defaults)
-                session.add(instance)
-                await session.commit()
-                return instance, True
 
     @classmethod
     async def update_by_filter(cls, filter, **data):
@@ -77,29 +59,34 @@ class BaseRepository:
             return result
 
     @classmethod
-    async def update(cls, id, data):
-        async with async_session() as session:
-            query = select(cls.model).filter_by(id=id)
-            result = await session.execute(query)
-            instance = result.scalar_one_or_none()
-            if not instance:
-                return {'message': 'Post not found'}
-            for key, value in data.dict().items():
-                setattr(instance, key, value)
-            session.add(instance)
-            await session.commit()
-            await session.refresh(instance)
-            return instance
+    async def update(cls, session: AsyncSession, id: int, data: dict):
+        query = select(cls.model).filter_by(id=id)
+        result = await session.execute(query)
+        instance = result.scalar_one_or_none()
+
+        if not instance:
+            raise ModelNotFoundException(f"{cls.model.__name__} with id {id} not found")
+
+        for key, value in data.items():
+            setattr(instance, key, value)
+
+        session.add(instance)
+        await session.commit()
+        await session.refresh(instance)
+
+        return instance
 
     @classmethod
-    async def destroy(cls, id):
-        async with async_session() as session:
-            query = select(cls.model).filter_by(id=id)
-            result = await session.execute(query)
-            instance = result.scalar()
-            session.delete(instance)
-            await session.commit()
-            return {'message': f'Post {id} deleted'}
+    async def destroy(cls, session: AsyncSession, id: int):
+        query = select(cls.model).filter_by(id=id)
+        result = await session.execute(query)
+        instance = result.scalar_one_or_none()
+
+        if not instance:
+            raise ModelNotFoundException(f"{cls.model.__name__} with id {id} not found")
+
+        await session.delete(instance)
+        await session.commit()
 
     @classmethod
     async def get_all(cls):

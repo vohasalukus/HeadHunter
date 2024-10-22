@@ -24,7 +24,9 @@ async def register_user(data: SCUser, session: AsyncSession = Depends(get_sessio
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = get_hashed_password(data.password)
-    user = await UserRepository.create(session=session, **data.dict(exclude={"password"}, update={"hashed_password": hashed_password}))
+    user_data = data.dict(exclude={"password"})
+    user_data["hashed_password"] = hashed_password
+    user = await UserRepository.create(**user_data, session=session)
     return SRUser.from_orm(user)
 
 
@@ -69,13 +71,13 @@ async def update_user(
     if "password" in user_data:
         user_data["hashed_password"] = get_hashed_password(user_data.pop("password"))
 
-    await UserRepository.update(session=session, id=current_user.id, data=user_data)
-    await session.refresh(current_user)
+    # Обновляем пользователя через модифицированный метод update
+    user = await UserRepository.update(session=session, id=current_user.id, data=user_data)
 
-    return SRUser.from_orm(current_user)
+    return SRUser.from_orm(user)
 
 
-@router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/", status_code=status.HTTP_200_OK)
 async def delete_user(
     session: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
@@ -83,7 +85,7 @@ async def delete_user(
     """
     Автоматически удаляет текущего пользователя
     """
-    await UserRepository.destroy(id=current_user.id)
+    await UserRepository.destroy(id=current_user.id, session=session)
     return {"message": "Successfully deleted"}
 
 
