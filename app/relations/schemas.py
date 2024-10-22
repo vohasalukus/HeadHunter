@@ -2,23 +2,50 @@ from typing import List
 
 from pydantic import BaseModel
 
-from app.company.schemas import SVacancy
-from app.relations.relations_application import StatusApplication
-from app.user.schemas import SResume
 
-
-class SSkill(BaseModel):
-    name: str
-    experience: str
-
-    resumes: List["SResume"]
-    vacancies: List["SVacancy"]
-
-
-class SApplication(BaseModel):
-    status: StatusApplication
+# Application Schemas
+class SGApplication(BaseModel):
+    id: int
+    status: str
     letter: str
-
     user_id: int
     company_id: int
 
+
+class SUApplication(BaseModel):
+    status: str | None = None
+    letter: str | None = None
+
+
+class SRApplication(BaseModel):
+    status: str
+    letter: str
+
+
+class SCApplication(BaseModel):
+    status: str
+    letter: str
+    user_id: int
+    company_id: int
+
+
+# Skills Schemas
+class SGSkill(BaseModel):
+    id: int
+    name: str
+    experience: str
+
+
+class SUSkill(BaseModel):
+    name: str | None = None
+    experience: str | None = None
+
+
+class SRSkill(BaseModel):
+    name: str
+    experience: str
+
+
+class SCSkill(BaseModel):
+    name: str
+    experience: str

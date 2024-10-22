@@ -1,28 +1,64 @@
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
-from app.relations.schemas import SSkill
 from app.user.models import UserRole
 
 
-class SUser(BaseModel):
+# User Schemas
+class SGUser(BaseModel):
+    id: int
     name: str
-    email: str
-    hashed_password: str
+    email: EmailStr
     role: UserRole
 
-    resumes: List
-    applications: List
+
+class SUUser(BaseModel):
+    name: str | None = None
+    email: EmailStr | None = None
+    role: UserRole | None = None
 
 
-class SResume(BaseModel):
+class SRUser(BaseModel):
+    name: str
+    email: EmailStr
+    role: UserRole
 
+
+class SCUser(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: UserRole
+
+
+# Resume Schemas
+class SGResume(BaseModel):
+    id: int
     name: str
     desired_salary: int
     profession: str
-
     user_id: int
+    skills: List['SGSkill'] = []
 
-    skills: List["SSkill"]
 
+class SUResume(BaseModel):
+    name: str | None = None
+    desired_salary: int | None = None
+    profession: str | None = None
+    skills: List['SGSkill'] | None = None
+
+
+class SRResume(BaseModel):
+    name: str
+    desired_salary: int
+    profession: str
+    skills: List['SGSkill'] = []
+
+
+class SCResume(BaseModel):
+    name: str
+    desired_salary: int
+    profession: str
+    user_id: int
+    skills: List['SGSkill'] = []
